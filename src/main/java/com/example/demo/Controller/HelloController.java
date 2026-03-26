@@ -1,11 +1,16 @@
 package com.example.demo.Controller;
 
 import com.example.demo.Entity.User;
+import com.example.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+//@RestController
 @RequestMapping("/api/users")
 public class HelloController {
+
+//    @Autowired
+//    private UserService userService;
 
     // 1. 获取用户信息（查）
     @GetMapping("/{id}")

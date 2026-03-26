@@ -1,8 +1,12 @@
 package com.example.demo.common;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 import java.util.List;
 
-
+@Data
+@AllArgsConstructor
 public class Result<T> {
 
     private Integer code;
@@ -44,11 +48,26 @@ public class Result<T> {
     }
 
 
-    public static <T> String success(){
-        return "操作成功";
+    public static <T> Result<T> success(){
+        return new Result<>(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessage(), null);
     }
 
-    public static <T> String error(Integer code, String message){
-        return "操作失败";
+    public static <T> Result<T> success(String msg){
+        return new Result<>(ResponseCode.SUCCESS.getCode(), msg, null);
     }
+
+    public static <T> Result<T> success(T data){
+        return new Result<>(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessage(), data);
+    }
+    public static <T> Result<T> success(String msg,T data){
+        return new Result<>(ResponseCode.SUCCESS.getCode(), msg, data);
+    }
+
+    public static <T> Result<T> error(Integer code, String message){
+        return new Result<>(code, message, null);
+    }
+    public static <T> Result<T> error(String message){
+        return new Result<>(ResponseCode.ERROR.getCode(), message, null);
+    }
+
 }

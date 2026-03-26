@@ -4,6 +4,9 @@ public enum ResponseCode {
 
     SUCCESS(200,"操作成功"),
     ERROR(500,"操作失败"),
+    USER_HAS_EXISTED(4001,"该用户名已被注册"),
+    USER_NOT_EXIST(4002,"该用户名不存在"),
+    PASSWORD_ERROR(4003,"账号或密码错误"),
     ;
 
     /**
@@ -19,6 +22,8 @@ public enum ResponseCode {
         this.code = code;
         this.message = message;
     }
+
+
 
     public Integer getCode() {
         return code;
