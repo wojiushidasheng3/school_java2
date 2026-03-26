@@ -2,15 +2,15 @@ spring:
   application:
     name: demo
 
-#
   datasource:
-    driver-class-name: org.postgresql.Driver # 显式指定 PostgreSQL 驱动
-    url: jdbc:postgresql://localhost:5432/lab_db # 端口改为 5432
-    username: postgres
-    password: password # 替换为你在 PgAdmin 中设置的实际密码
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://192.168.115.128:5432/postgres
+    username: root
+    password: 696903
 
-mybatis:
+mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.example.demo.entity
-
-
+  type-aliases-package: com.example.demo.Entity
+  global-config:
+    db-config:
+      id-type: auto

@@ -16,12 +16,6 @@ public class Result<T> {
     public Result() {
     }
 
-    public Result(Integer code, String msg, List<String> data) {
-        this.code = code;
-        this.msg = msg;
-        this.data = (T) data;
-    }
-
 
     public Integer getCode() {
         return code;
@@ -39,12 +33,12 @@ public class Result<T> {
         this.msg = msg;
     }
 
-    public List<String> getData() {
-        return (List<String>) data;
+    public T getData() {
+        return data;
     }
 
-    public void setData(List<String> data) {
-        this.data = (T) data;
+    public void setData(T data) {
+        this.data = data;
     }
 
 
