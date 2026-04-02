@@ -32,6 +32,6 @@ public class UserController {
     // 3. 获取用户信息（查）- 用于测试拦截器放行
     @GetMapping("/{id}")
     public Result<String> getUser(@PathVariable("id") Long id) {
-        return Result.success("查询成功，正在返回 ID 为 " + id + " 的用户信息");
+        return userService.getUserById(id);
     }
 }
