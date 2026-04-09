@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.DTO.UserDTO;
 import com.example.demo.Entity.User;
 import com.example.demo.common.ResponseCode;
@@ -70,5 +71,14 @@ public class UserServiceImpl implements UserService {
             return Result.error(ResponseCode.USER_NOT_EXIST.getMessage());
         }
         return Result.success(user.getUsername());
+    }
+
+    @Override
+    public Result<Object> getUserPage(Integer pageNum, Integer pageSize) {
+        Page<User> page = new Page<>(pageNum, pageSize);
+
+        Page<User> userPage = userMapper.selectPage(page, null);
+        return Result.success(userPage);
+
     }
 }

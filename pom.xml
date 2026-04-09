@@ -82,6 +82,13 @@
 			<version>3.5.10.1</version>
 		</dependency>
 
+		<!-- ⭐ 关键：3.5.9 版本后必须单独添加这个分页依赖 -->
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-jsqlparser</artifactId>
+			<version>3.5.10.1</version>  <!-- 版本号与主依赖保持一致 -->
+		</dependency>
+
 
 	</dependencies>
 
