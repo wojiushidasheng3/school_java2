@@ -7,6 +7,12 @@ spring:
     url: jdbc:postgresql://192.168.115.128:5432/postgres
     username: root
     password: 696903
+  data:
+    redis:
+      host: 192.168.115.128
+      port: 6381
+      database: 0
+      password: 696903
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml

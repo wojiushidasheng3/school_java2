@@ -7,6 +7,7 @@ public enum ResponseCode {
     USER_HAS_EXISTED(4001,"该用户名已被注册"),
     USER_NOT_EXIST(4002,"该用户名不存在"),
     PASSWORD_ERROR(4003,"账号或密码错误"),
+    PARAM_ERROR(4004,"参数错误"),
     ;
 
     /**
