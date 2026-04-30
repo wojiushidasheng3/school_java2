@@ -13,6 +13,7 @@ import com.example.demo.mapper.UserMapper;
 import com.example.demo.mapper.UserInfoMapper;
 import com.example.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import com.example.demo.config.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,9 @@ public class UserServiceImpl implements UserService {
     
     @Autowired
     private UserInfoMapper userInfoMapper;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     // 缓存键前缀
     private static final String CACHE_KEY_PREFIX = "user:detail:";
@@ -66,8 +70,8 @@ public class UserServiceImpl implements UserService {
             return Result.error(ResponseCode.PASSWORD_ERROR.getMessage());
         }
         
-        String token = "Bearer " + user.getUsername() + "." + System.currentTimeMillis();
-        return Result.success("登录成功", token);
+        String jwt = jwtUtil.generateToken(user.getUsername());
+        return Result.success("操作成功", jwt);
     }
 
     @Override

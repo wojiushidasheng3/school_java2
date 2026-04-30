@@ -28,7 +28,9 @@ public class UserController {
     // 2. 用户登录 - 路径为 POST /api/users/login
     @PostMapping("/login")
     public Result<String> login(@RequestBody UserDTO userDTO) {
-        return userService.login(userDTO);
+
+
+        return  userService.login(userDTO);
     }
 
     // 3. 获取用户信息（查）- 用于测试拦截器放行
