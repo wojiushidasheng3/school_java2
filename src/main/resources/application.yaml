@@ -13,6 +13,9 @@ spring:
       port: 6381
       database: 0
       password: 696903
+  ai:
+    dashscope:
+      api-key: ${DASHSCOPE_API_KEY}
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
