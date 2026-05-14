@@ -9,10 +9,17 @@ spring:
     password: 696903
   data:
     redis:
-      host: 192.168.115.128
-      port: 6381
-      database: 0
+      sentinel:
+        master: mymaster
+        nodes: 192.168.115.128:27001,192.168.115.128:27002,192.168.115.128:27003
+        password: 696903
       password: 696903
+      timeout: 5000
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
   ai:
     dashscope:
       api-key: ${DASHSCOPE_API_KEY}

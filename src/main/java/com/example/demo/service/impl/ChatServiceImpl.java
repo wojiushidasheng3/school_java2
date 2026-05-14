@@ -1,16 +1,23 @@
 package com.example.demo.service.impl;
 
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
+import com.example.demo.DTO.ChatRequestDTO;
+import com.example.demo.VO.ChatResponseVO;
 import com.example.demo.service.ChatService;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ChatServiceImpl implements ChatService {
 
     private final ChatClient chatClient;
 
-    public ChatServiceImpl(ChatClient.Builder chatClientBuilder) {
+    private final StringRedisTemplate stringRedisTemplate;
+
+    public ChatServiceImpl(ChatClient.Builder chatClientBuilder, StringRedisTemplate stringRedisTemplate) {
         this.chatClient = chatClientBuilder
                 .defaultSystem("你是一名专业、友好、简洁的中文智能助手，请根据用户问题给出准确的回答")
                 .defaultOptions(
@@ -19,6 +26,7 @@ public class ChatServiceImpl implements ChatService {
                                 .build()
                 )
                 .build();
+        this.stringRedisTemplate = stringRedisTemplate;
     }
 
     @Override
@@ -26,5 +34,43 @@ public class ChatServiceImpl implements ChatService {
         return chatClient.prompt(message)
                 .call()
                 .content();
+    }
+
+    @Override
+    public ChatResponseVO chat(ChatRequestDTO requestDTO) {
+
+        String sessionId = requestDTO.getSessionId();
+        if(requestDTO.getSessionId() == null || sessionId.isEmpty()){
+            throw new IllegalArgumentException("sessionId不能为空");
+        }
+        String message = requestDTO.getMessage();
+        String redisKey = "service:chat:session:"+sessionId;
+
+        List<String> records = stringRedisTemplate.opsForList().range(redisKey, 0, -1);
+                String historyText = "";
+
+                if (records != null && !records.isEmpty()) {
+                    historyText = String.join("\n",records);
+                }
+
+                String finalPrompt = """
+                        以下是历史对话:%s
+                        
+                        当前用户问题：%s
+                        
+                        """
+                        .formatted(historyText, message);
+
+        String answer = chatClient.prompt(finalPrompt).call().content();
+
+        String recordText = "用户："+message+"\n助手："+answer;
+        stringRedisTemplate.opsForList().rightPush(redisKey, recordText);
+        Long size = stringRedisTemplate.opsForList().size(redisKey);
+        if(size!=null && size > 3){
+            stringRedisTemplate.opsForList().trim(redisKey,size-3,size-1);
+        }
+        return new ChatResponseVO(message, answer);
+
+
     }
 }
